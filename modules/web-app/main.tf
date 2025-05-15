@@ -30,16 +30,39 @@ resource "aws_db_instance" "db_instance" {
     allocated_storage = 20
     username   = var.db_username
     password   = var.db_password
-    db_name    = "exampledb"
+    db_name    = var.db_name
     skip_final_snapshot = true
     publicly_accessible = true
+}
+
+resource "aws_security_group" "instance" {
+  name        = "web-app-sg"
+  description = "Security group for web app"
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "WebAppSecurityGroup"
+  }
 }
 
 
 resource "aws_security_group_rule" "allow_http_inbound" {
   description = "Allow HTTP inbound traffic"
   type        = "ingress"
-  security_group_id = var.security_group_id
+  security_group_id = aws_security_group.instance.id
   from_port   = 8080
   to_port     = 8080
   protocol    = "tcp"

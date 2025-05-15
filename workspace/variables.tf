@@ -23,9 +23,3 @@ variable "db_password" {
   default     = "password"
   sensitive = true
 }
-
-variable "db_name" {
-  description = "Name of the database"
-  type        = string
-  default     = "exampledb"
-}

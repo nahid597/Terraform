@@ -53,5 +53,4 @@ module "web_app" {
     instance_type = var.instance_type
     db_username = var.db_username
     db_password = var.db_password
-    security_group_id = aws_security_group.instance.id
 }
